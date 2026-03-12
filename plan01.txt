@@ -1,0 +1,79 @@
+# Open Water Boat Game - Development Plan
+
+## Vision
+Open world boat game set in the 1900s with semi-realistic WWII/WWI factions. Players freely explore the ocean, battle enemy boats and island bases, while managing fuel and staying alive.
+
+## Phase 1: Core Combat & Fuel (High Priority)
+
+### 1. Fuel System
+- Fuel gauge in HUD (alongside health)
+- Fuel drains while moving
+- Game over if fuel reaches 0
+- Fuel pickup stations on islands or floating barrels
+
+### 2. Combat System
+- Mouse-aimed cannons (turret)
+- Projectile physics
+- Reload mechanics
+- Visual recoil/camera shake on shoot
+
+### 3. Enemy Island Base
+- Shootable structure with health bar
+- Returns fire at player
+- Spawns in Island Group 2 (enemy territory)
+
+## Phase 2: World Building (High Priority)
+
+### 4. Two Island Groups
+- Group 1: Player starting area (friendly islands with fuel)
+- Group 2: Enemy territory with the base to destroy
+- Distance/compass HUD showing direction to objectives
+
+### 5. Wake Trail Effect
+- Visual feedback behind boat
+- Foam particle system
+
+### 6. Explosion/Hit Effects
+- Particle explosions on impact
+- Screen shake when taking damage
+
+## Phase 3: Polish & Atmosphere (Medium Priority)
+
+### 7. Day/Night Cycle
+- Dynamic sun/moon lighting
+- WWII atmosphere
+
+### 8. Ammunition System
+- Limited ammo, pickups on islands
+- Reload UI indicator
+
+### 9. Enemy Patrol Boats
+- Mobile enemies roaming between islands
+- AI that chases player or patrols routes
+
+### 10. Audio
+- Engine sounds
+- Cannon fire
+- Explosions
+
+## Phase 4: Game Flow (Lower Priority)
+
+### 11. Mission System
+- "Destroy the Enemy Base" objective tracker
+
+### 12. Save System
+- Save fuel, health, location
+
+## Current State
+- Boat movement with physics (WASD)
+- Wave bobbing simulation
+- Health/damage system
+- Sinking/respawn mechanic
+- Basic HUD (health bar)
+- Single island scene
+
+## Game Mechanics
+- Simple & arcade sailing (keep current WASD movement)
+- Hazards: Environmental + Combat (island bases, future enemy boats)
+- Start: Player at Island Group 1, objective to destroy enemy base in Island Group 2
+- No NPCs initially, just enemy island base to engage

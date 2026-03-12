@@ -1,0 +1,46 @@
+# Godot specific
+.godot/
+.import/
+export/
+
+# Mono specific (not using .NET but good practice)
+mono/temp/
+
+# Imported resources
+*.import
+*.uid
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.sav
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Editor files
+*.tscn.editstate
+*.tscn.folding
+editor/
+*.cache
+
+# Build artifacts
+*.apk
+*.app
+*.pck
+*.x86_64
+*.exe
+
+# Logs
+*.log
+
+# Keep essential project files
+!project.godot

@@ -1,0 +1,58 @@
+Phase 1: Engine Initialization and Folder Structure
+Just like setting up a new repository, your first goal is to get the engine open and organize your file tree so it doesn't become a mess later.
+
+Download: Grab the standard Godot 4 version (you don't need the .NET version since you are using GDScript, not C#).
+
+Create Project: Name it something related to your game and create a new folder.
+
+Build the File Tree: In Godot's "FileSystem" dock, create these base folders:
+
+Scenes (Think of these like your HTML pages—your main menu, your open world, your boat)
+
+Scripts (Your .gd logic files, like your JS files)
+
+Assets (With subfolders for Models, Textures, and Audio)
+
+UI (For your standard digital menus and health bars)
+
+Phase 2: The Blockout Boat (Your Player)
+Before worrying about water or enemies, you need a ship that can move.
+
+Create a Player Scene: Create a new scene with a CharacterBody3D node as the root. This node handles physics and movement.
+
+Add a Mesh: Add a MeshInstance3D as a child and give it a simple cube or rectangle shape. This represents your ship's hull for now.
+
+Add Collision: Add a CollisionShape3D that matches your box. This ensures your boat doesn't fall through the world.
+
+Attach a Script: Create a player_boat.gd script. You'll write simple logic here to translate keyboard inputs (W, A, S, D) into forward momentum and turning.
+
+Phase 3: The Health and Sinking Logic
+Next, we add the MVP survival mechanics you mentioned.
+
+Define Variables: At the top of your player_boat.gd script, set up your starting states: max_health = 100, current_health = 100, is_sinking = false, and a spawn_point (an X, Y, Z coordinate).
+
+Create a Damage Function: Write a simple function take_damage(amount) that subtracts from current_health.
+
+Create a Sinking Function: Add logic that checks if current_health <= 0. If true, set is_sinking = true, disable movement, and slowly lower the boat's Y-axis coordinate so it dips below the "water."
+
+Create a Respawn Function: After a few seconds of sinking, reset current_health to 100 and move the boat back to the spawn_point coordinates.
+
+Phase 4: The Ocean (The World)
+You need a place to drive the boat.
+
+Create a World Scene: Make a new scene called main_world.tscn.
+
+Add the Water: Add a giant MeshInstance3D (a flat plane) and color it blue. This is your ocean.
+
+Drop in the Boat: Drag and drop your Player Scene into this World Scene so your boat is sitting right on top of the blue plane.
+
+Add a Camera: Attach a Camera3D to your boat so it follows you around from a third-person perspective.
+
+Phase 5: The Basic Digital UI
+Finally, you need to see your health.
+
+Create a CanvasLayer: In your World Scene, add a CanvasLayer node. Anything you put in here will stick to the screen like a standard HUD.
+
+Add a Health Bar: Add a ProgressBar node.
+
+Connect them: Write a tiny script that updates the ProgressBar's value to match the current_health variable from your boat script.

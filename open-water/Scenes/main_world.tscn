@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/hud_controller.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://Scenes/PlayerBoat.tscn" id="2_boat"]
+[ext_resource type="PackedScene" path="res://Scenes/Island.tscn" id="3_island"]
+[ext_resource type="Shader" path="res://Assets/Textures/water.gdshader" id="4_water_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_Water"]
+render_priority = 0
+shader = ExtResource("4_water_shader")
+shader_parameter/water_color = Color(0, 0.4, 0.8, 1)
+shader_parameter/deep_water_color = Color(0, 0.2, 0.5, 1)
+shader_parameter/wave_speed = 1.0
+shader_parameter/wave_height = 0.25
+shader_parameter/foam_level = 0.5
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1"]
+material = SubResource("ShaderMaterial_Water")
+size = Vector2(500, 500)
+subdivide_depth = 128
+subdivide_width = 128
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1"]
+
+[node name="MainWorld" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="Ocean" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ocean"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ocean/StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_1")
+
+[node name="PlayerBoat" parent="." instance=ExtResource("2_boat")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Islands" type="Node3D" parent="."]
+
+[node name="Island1" parent="Islands" instance=ExtResource("3_island")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, -30)
+
+[node name="Island2" parent="Islands" instance=ExtResource("3_island")]
+transform = Transform3D(2, 0, 0, 0, 1.5, 0, 0, 0, 2, -40, 0, -50)
+
+[node name="Island3" parent="Islands" instance=ExtResource("3_island")]
+transform = Transform3D(1.5, 0, 0, 0, 1.2, 0, 0, 0, 1.5, 10, 0, 40)
+
+[node name="Island4" parent="Islands" instance=ExtResource("3_island")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 3, -70, 0, 20)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hud")
+player_path = NodePath("../../PlayerBoat")
+
+[node name="ProgressBar" type="ProgressBar" parent="UI/HUD"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 320.0
+offset_bottom = 50.0
+step = 1.0
+value = 100.0
