@@ -42,10 +42,18 @@ godot --path open-water --editor
 ```
 open-water/
 ├── Scenes/          # .tscn files (PascalCase)
+│   ├── PlayerBoat.tscn       # Player boat with red/gray hull
+│   ├── main_world.tscn        # Main game world with two regions
+│   ├── Port.tscn              # Reusable dock structure
+│   ├── AridIsland.tscn        # Sandy arid island base
+│   ├── TropicalIsland.tscn    # Green tropical island base
+│   ├── AridIslandWithPort.tscn    # Arid island + port
+│   └── TropicalIslandWithPort.tscn # Tropical island + port
 ├── Scripts/         # .gd files (snake_case)
 ├── Assets/
 │   ├── Models/
 │   ├── Textures/
+│   │   └── water.gdshader    # Procedural water shader
 │   └── Audio/
 └── UI/             # CanvasLayer, control nodes
 ```
@@ -56,19 +64,12 @@ open-water/
 - Reference external scenes: `preload("res://path/to/scene.tscn")`
 
 ### Type Hints
-- Use type hints for function parameters and return values:
-  ```gdscript
-  func _get_wave_height(x: float, z: float, t: float) -> float:
-  ```
+- Use type hints: `func _get_wave_height(x: float, z: float, t: float) -> float:`
 - Optional but encouraged for clarity
 - Built-in types: `Vector3`, `float`, `bool`, `int`, `String`, `Node`
 
 ### Formatting
-- Use tabs for indentation
-- Spaces around operators: `x = a + b`
-- Spaces after commas: `Vector3(x, y, z)`
-- No trailing whitespace
-- Blank lines between logical sections
+- Tabs for indentation, spaces around operators, no trailing whitespace
 
 ### Node References
 - Use `@onready` for child node references (cached after `_ready()`):
@@ -76,55 +77,43 @@ open-water/
   @onready var camera = $Camera3D
   @onready var health_bar = $ProgressBar
   ```
-- Use `$NodePath` notation for direct children
-- Use `get_node("path")` for deeper or conditional paths
+- Use `$NodePath` for direct children, `get_node("path")` for deeper paths
 
 ### Exposed Variables
-- Use `@export` for editor-exposed variables:
+- Use `@export` for editor-exposed variables (appears in Inspector panel):
   ```gdscript
   @export var player_path: NodePath
   @export var speed: float = 10.0
   ```
-- Exposed variables appear in Godot Inspector panel
 
 ### Constants
-- Define constants at class top (after class declaration):
-  ```gdscript
-  const SPEED = 10.0
-  const TURN_SPEED = 2.0
-  ```
+- Define at class top: `const SPEED = 10.0`
 - Use `Vector3.ZERO` instead of `Vector3(0, 0, 0)`
 
 ### Error Handling
-- No try-catch exceptions in GDScript
-- Use simple if statements for validation:
+- No try-catch exceptions - use simple if statements for validation:
   ```gdscript
   if not player: return
   if is_sinking: return
   ```
-- Early returns preferred over deep nesting
-- Use `print()` for debugging output
+- Early returns preferred, use `print()` for debugging
 
 ### Physics & Movement
 - Use `CharacterBody3D` for physics-based characters (boats)
-- Override `_physics_process(delta)` for physics calculations
-- Use `move_and_slide()` for movement
+- Override `_physics_process(delta)` for physics, `move_and_slide()` for movement
 - Set velocity components directly: `velocity.x = forward.x * speed`
 
 ### Godot Lifecycle Methods
-- `_ready()`: Called when node is added to scene (like constructor)
-- `_physics_process(delta)`: Called every physics frame (runs at fixed timestep)
-- `_process(delta)`: Called every frame (for rendering/UI updates)
+- `_ready()`: Node added to scene
+- `_physics_process(delta)`: Every physics frame (fixed timestep)
+- `_process(delta)`: Every frame (rendering/UI)
 
 ### Shaders
 - Shader files: `name.gdshader` in Assets/Textures/
-- Use `shader_type spatial;` for 3D materials
-- Vertex and fragment functions: `void vertex() {}`, `void fragment() {}`
+- `shader_type spatial;` for 3D materials: `void vertex() {}`, `void fragment() {}`
 
 ### Comments
-- Use `#` for single-line comments
-- Minimal inline comments - prefer self-documenting code
-- Comment complex math or non-obvious logic
+- Use `#` for single-line comments, minimal inline comments, prefer self-documenting code
 
 ### UI & HUD
 - Use `Control` nodes with `CanvasLayer` for HUD elements
@@ -149,6 +138,10 @@ open-water/
 - Health/damage/sink/respawn cycle is core mechanic
 - Camera is child of boat with FOV speed effects
 - Simple arcade controls: WASD movement, Space for debug damage
+- World split into two regions: Arid (player spawn) and Tropical (enemy)
+- Islands use cylinder meshes for simple terrain with collision
+- Port scene is reusable, can be parented to any island type
+- StaticBody3D for islands (non-moving objects with collision)
 
 ## When Making Changes
 1. Always test changes by running the scene in Godot Editor (F6)

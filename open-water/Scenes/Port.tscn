@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1a2c3d4e5f6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_Concrete"]
+albedo_color = Color(0.6, 0.6, 0.65, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_Dock"]
+material = SubResource("StandardMaterial3D_Concrete")
+size = Vector3(4, 0.3, 15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Pile"]
+material = SubResource("StandardMaterial3D_Concrete")
+size = Vector3(0.5, 2.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_Dock"]
+size = Vector3(4, 1.0, 15)
+
+[node name="Port" type="StaticBody3D"]
+
+[node name="Dock" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_Dock")
+
+[node name="PileFrontLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, -1.25, -6.5)
+mesh = SubResource("BoxMesh_Pile")
+
+[node name="PileFrontRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, -1.25, -6.5)
+mesh = SubResource("BoxMesh_Pile")
+
+[node name="PileBackLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, -1.25, 6.5)
+mesh = SubResource("BoxMesh_Pile")
+
+[node name="PileBackRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, -1.25, 6.5)
+mesh = SubResource("BoxMesh_Pile")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("BoxShape3D_Dock")

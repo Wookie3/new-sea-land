@@ -13,7 +13,8 @@ var respawn_timer = 0.0
 
 func _ready():
 	spawn_point = global_position
-	print("Boat Ready! Use WASD to move. Press Space to take damage.")
+	print("Boat Ready! Use WASD to move. Space to take damage.")
+	print("Arid Islands nearby. Enemy base in Tropical region to the SOUTH.")
 
 @onready var camera = $Camera3D
 const BASE_FOV = 75.0
