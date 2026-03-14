@@ -1,0 +1,128 @@
+[gd_scene format=3]
+
+; --- MATERIALS ---
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_hull"]
+albedo_color = Color(0.18, 0.2, 0.22, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_deck"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_metal"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
+roughness = 0.6
+metallic = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_copper"]
+albedo_color = Color(0.5, 0.3, 0.15, 1)
+roughness = 0.5
+metallic = 0.6
+
+; --- MESHES ---
+[sub_resource type="BoxMesh" id="BoxMesh_hull"]
+material = SubResource("StandardMaterial3D_dark_hull")
+size = Vector3(1.0, 0.6, 7.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bow"]
+material = SubResource("StandardMaterial3D_dark_hull")
+size = Vector3(0.4, 0.6, 2.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stern"]
+material = SubResource("StandardMaterial3D_dark_hull")
+size = Vector3(0.8, 0.6, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_turtleback"]
+material = SubResource("StandardMaterial3D_dark_hull")
+size = Vector3(0.9, 0.4, 3.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck"]
+material = SubResource("StandardMaterial3D_deck")
+size = Vector3(0.9, 0.1, 5.0)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_funnel"]
+material = SubResource("StandardMaterial3D_metal")
+top_radius = 0.2
+bottom_radius = 0.25
+height = 1.4
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_torpedo_tube"]
+material = SubResource("StandardMaterial3D_metal")
+top_radius = 0.12
+bottom_radius = 0.12
+height = 1.8
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_torpedo_head"]
+material = SubResource("StandardMaterial3D_copper")
+top_radius = 0.01
+bottom_radius = 0.11
+height = 0.3
+radial_segments = 6
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tube_base"]
+material = SubResource("StandardMaterial3D_dark_hull")
+top_radius = 0.15
+bottom_radius = 0.2
+height = 0.4
+radial_segments = 8
+
+; --- SCENE GRAPH ---
+[node name="Enemy_TB_Turtleback" type="Node3D"]
+
+; -- HULL --
+[node name="MainHull" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_hull")
+
+[node name="Bow" type="MeshInstance3D" parent="MainHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.75)
+mesh = SubResource("BoxMesh_bow")
+
+[node name="Stern" type="MeshInstance3D" parent="MainHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.25)
+mesh = SubResource("BoxMesh_stern")
+
+[node name="MainDeck" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 1.5)
+mesh = SubResource("BoxMesh_deck")
+
+; -- TURTLEBACK (Sloped forward section) --
+[node name="TurtlebackSlope" type="MeshInstance3D" parent="."]
+; Rotated slightly down towards the front (pitch)
+transform = Transform3D(1, 0, 0, 0, 0.9848, 0.1736, 0, -0.1736, 0.9848, 0, 0.7, -3.0)
+mesh = SubResource("BoxMesh_turtleback")
+
+; -- FUNNELS (Raked backward) --
+[node name="Funnels" type="Node3D" parent="."]
+; Group rotated backwards slightly
+transform = Transform3D(1, 0, 0, 0, 0.9659, -0.2588, 0, 0.2588, 0.9659, 0, 1.1, -1.0)
+
+[node name="Funnel1" type="MeshInstance3D" parent="Funnels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.6)
+mesh = SubResource("CylinderMesh_funnel")
+
+[node name="Funnel2" type="MeshInstance3D" parent="Funnels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8)
+mesh = SubResource("CylinderMesh_funnel")
+
+; -- AFT TORPEDO TUBE --
+[node name="TorpedoLauncher" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 2.5)
+
+[node name="Base" type="MeshInstance3D" parent="TorpedoLauncher"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("CylinderMesh_tube_base")
+
+[node name="Tube" type="MeshInstance3D" parent="TorpedoLauncher"]
+; Rotated 90 degrees to lay flat, aiming slightly outwards to port
+transform = Transform3D(0.866, 0, 0.5, 0.5, 0, -0.866, 0, 1, 0, 0, 0.5, 0)
+mesh = SubResource("CylinderMesh_torpedo_tube")
+
+[node name="Warhead" type="MeshInstance3D" parent="TorpedoLauncher/Tube"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+mesh = SubResource("CylinderMesh_torpedo_head")

@@ -1,0 +1,162 @@
+[gd_scene format=3]
+
+; --- MATERIALS ---
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull"]
+albedo_color = Color(0.4, 0.42, 0.45, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_deck"]
+albedo_color = Color(0.65, 0.55, 0.45, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_funnel"]
+albedo_color = Color(0.85, 0.75, 0.5, 1)
+roughness = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_black"]
+albedo_color = Color(0.15, 0.15, 0.15, 1)
+roughness = 0.6
+
+; --- MESHES ---
+[sub_resource type="BoxMesh" id="BoxMesh_hull_main"]
+material = SubResource("StandardMaterial3D_hull")
+size = Vector3(2.4, 1.2, 12.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bow"]
+material = SubResource("StandardMaterial3D_hull")
+size = Vector3(1.2, 1.2, 3.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stern"]
+material = SubResource("StandardMaterial3D_hull")
+size = Vector3(1.6, 1.2, 2.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_deck"]
+material = SubResource("StandardMaterial3D_deck")
+size = Vector3(2.0, 0.2, 11.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bridge_base"]
+material = SubResource("StandardMaterial3D_hull")
+size = Vector3(1.6, 0.6, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bridge_top"]
+material = SubResource("StandardMaterial3D_deck")
+size = Vector3(1.8, 0.2, 1.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sponson"]
+material = SubResource("StandardMaterial3D_hull")
+size = Vector3(2.8, 0.6, 1.0)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_funnel_base"]
+material = SubResource("StandardMaterial3D_funnel")
+top_radius = 0.4
+bottom_radius = 0.4
+height = 2.0
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_funnel_top"]
+material = SubResource("StandardMaterial3D_black")
+top_radius = 0.42
+bottom_radius = 0.42
+height = 0.6
+radial_segments = 8
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mast"]
+material = SubResource("StandardMaterial3D_black")
+top_radius = 0.08
+bottom_radius = 0.12
+height = 5.0
+radial_segments = 6
+rings = 1
+
+; --- SCENE GRAPH ---
+[node name="HMS_Diadem_Voxel" type="Node3D"]
+
+; -- HULL --
+[node name="MainHull" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_hull_main")
+
+[node name="Bow" type="MeshInstance3D" parent="MainHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.5)
+mesh = SubResource("BoxMesh_bow")
+
+[node name="Stern" type="MeshInstance3D" parent="MainHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.0)
+mesh = SubResource("BoxMesh_stern")
+
+[node name="SponsonLeft" type="MeshInstance3D" parent="MainHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -2.0)
+mesh = SubResource("BoxMesh_sponson")
+
+[node name="SponsonRight" type="MeshInstance3D" parent="MainHull"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 2.0)
+mesh = SubResource("BoxMesh_sponson")
+
+; -- DECK & SUPERSTRUCTURE --
+[node name="MainDeck" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -0.5)
+mesh = SubResource("BoxMesh_deck")
+
+[node name="BridgeBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, -4.0)
+mesh = SubResource("BoxMesh_bridge_base")
+
+[node name="BridgeTop" type="MeshInstance3D" parent="BridgeBase"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.25)
+mesh = SubResource("BoxMesh_bridge_top")
+
+; -- 4 FUNNELS (SMOKESTACKS) --
+[node name="Funnel1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.8)
+
+[node name="Base" type="MeshInstance3D" parent="Funnel1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("CylinderMesh_funnel_base")
+
+[node name="Top" type="MeshInstance3D" parent="Funnel1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+mesh = SubResource("CylinderMesh_funnel_top")
+
+[node name="Funnel2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.2)
+
+[node name="Base" type="MeshInstance3D" parent="Funnel2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("CylinderMesh_funnel_base")
+
+[node name="Top" type="MeshInstance3D" parent="Funnel2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+mesh = SubResource("CylinderMesh_funnel_top")
+
+[node name="Funnel3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.4)
+
+[node name="Base" type="MeshInstance3D" parent="Funnel3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("CylinderMesh_funnel_base")
+
+[node name="Top" type="MeshInstance3D" parent="Funnel3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+mesh = SubResource("CylinderMesh_funnel_top")
+
+[node name="Funnel4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.0)
+
+[node name="Base" type="MeshInstance3D" parent="Funnel4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+mesh = SubResource("CylinderMesh_funnel_base")
+
+[node name="Top" type="MeshInstance3D" parent="Funnel4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+mesh = SubResource("CylinderMesh_funnel_top")
+
+; -- MASTS --
+[node name="Foremast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, -5.0)
+mesh = SubResource("CylinderMesh_mast")
+
+[node name="Mainmast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.9, 4.8)
+mesh = SubResource("CylinderMesh_mast")
